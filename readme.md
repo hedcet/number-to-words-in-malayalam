@@ -23,7 +23,7 @@ console.log(randomNumber, converter.toWords(randomNumber));
 
 ### toWords(number)
 
-this helper function will convert number to malayalam words
+this helper function will convert number to malayalam words, won't accept floating/negative numbers
 @return <code>String</code> words in malayalam
 
 | opt    | type                       | description                             |
