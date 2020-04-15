@@ -308,4 +308,28 @@ module.exports = {
       multiples[2]
     )}`.replace(/ത്തി നൂ/, "ത്തി ഒരുനൂ");
   },
+
+  lessThan10000000(number = "") {
+    const formatted = `${number}`
+      .replace(/[^0-9]+/g, "")
+      .replace(/^0+([1-9][0-9]*)/, "$1")
+      .replace(/^0+0/, "0");
+
+    if (!formatted || 7 < formatted.length)
+      return new Error("invalid number format");
+
+    if (formatted.length < 6) return this.lessThan100000(number);
+
+    const multiples = formatted.match(/(.{1,2})(.{5})/);
+
+    let lessThan10000000 = `${
+      multiples[1] == "1" ? "ഒരു" : this.lessThan100(multiples[1])
+    } ലക്ഷം`;
+
+    if (multiples[2] == "00000") return lessThan10000000;
+
+    return `${lessThan10000000.replace(/ം$/, "ത്തി")} ${this.lessThan100000(
+      multiples[2]
+    )}`;
+  },
 };
