@@ -2,8 +2,8 @@
   "description": "convert number to words in malayalam",
   "keywords": [
     "convert",
-    "number",
     "malayalam",
+    "number",
     "words"
   ],
   "main": "main.js",

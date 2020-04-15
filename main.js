@@ -5,7 +5,8 @@ module.exports = {
       .replace(/^0+([1-9][0-9]*)/, "$1")
       .replace(/^0+0/, "0");
 
-    if (!formatted) return new Error("invalid number format");
+    if (!formatted || 2 < formatted.length)
+      return new Error("invalid number format");
 
     const mapping = {
       0: "പൂജ്യം",
@@ -35,14 +36,14 @@ module.exports = {
 
     if (mapping[formatted]) return mapping[formatted];
 
-    const multipleOf10 = `${formatted.charAt(0)}0`;
-    const multipleOf1 = `${formatted.charAt(1)}`;
+    const multiplesOf10 = `${formatted.charAt(0)}0`;
+    const multiplesOf1 = `${formatted.charAt(1)}`;
 
-    const word = `${mapping[multipleOf10]}${mapping[multipleOf1]}`;
+    const word = `${mapping[multiplesOf10]}${mapping[multiplesOf1]}`;
 
-    switch (multipleOf10) {
+    switch (multiplesOf10) {
       case "10": {
-        switch (multipleOf1) {
+        switch (multiplesOf1) {
           case "3": {
             return word.replace(/ത്ത്മ/, "തിമ");
           }
@@ -73,7 +74,7 @@ module.exports = {
       case "60":
       case "70":
       case "80": {
-        switch (multipleOf1) {
+        switch (multiplesOf1) {
           case "1":
           case "9": {
             return word.replace(/ത്ഒ/, "ത്തൊ");
@@ -110,7 +111,7 @@ module.exports = {
       }
 
       case "90": {
-        switch (multipleOf1) {
+        switch (multiplesOf1) {
           case "1":
           case "9": {
             return word.replace(/റ്ഒ/, "റ്റൊ");
@@ -154,7 +155,8 @@ module.exports = {
       .replace(/^0+([1-9][0-9]*)/, "$1")
       .replace(/^0+0/, "0");
 
-    if (!formatted) return new Error("invalid number format");
+    if (!formatted || 3 < formatted.length)
+      return new Error("invalid number format");
 
     const mapping = {
       100: "നൂറ്",
@@ -170,13 +172,13 @@ module.exports = {
 
     if (mapping[formatted]) return mapping[formatted];
 
-    if (formatted.length == 3) {
-      const multipleOf100 = `${formatted.charAt(0)}00`;
+    if (2 < formatted.length) {
+      const multiplesOf100 = `${formatted.charAt(0)}00`;
       const lessThan100 = this.lessThan100(
         `${formatted.charAt(1)}${formatted.charAt(2)}`
       );
 
-      switch (multipleOf100) {
+      switch (multiplesOf100) {
         case "100":
         case "200":
         case "300":
@@ -185,14 +187,14 @@ module.exports = {
         case "600":
         case "700":
         case "800": {
-          return `${mapping[multipleOf100].replace(
+          return `${mapping[multiplesOf100].replace(
             /റ്$/,
             "റ്റി"
           )} ${lessThan100}`;
         }
 
         case "900": {
-          return `${mapping[multipleOf100].replace(
+          return `${mapping[multiplesOf100].replace(
             /ം$/,
             "ത്തി"
           )} ${lessThan100}`;
@@ -200,6 +202,114 @@ module.exports = {
       }
     }
 
-    return this.lessThan100(number);
+    return this.lessThan100(formatted);
+  },
+
+  lessThan100000(number = "") {
+    const formatted = `${number}`
+      .replace(/[^0-9]+/g, "")
+      .replace(/^0+([1-9][0-9]*)/, "$1")
+      .replace(/^0+0/, "0");
+
+    if (!formatted || 5 < formatted.length)
+      return new Error("invalid number format");
+
+    const mapping = {
+      1000: "ആയിരം",
+      3000: "മൂവ്വായിരം",
+      8000: "എണ്ണായിരം",
+
+      11000: "പതിനൊന്നായിരം",
+      13000: "പതിമൂന്നായിരം",
+      18000: "പതിനെട്ടായിരം",
+
+      21000: "ഇരുപത്തൊന്നായിരം",
+      23000: "ഇരുപത്തിമൂന്നായിരം",
+      28000: "ഇരുപത്തിയെട്ടായിരം",
+
+      31000: "മുപ്പത്തൊന്നായിരം",
+      33000: "മുപ്പത്തിമൂന്നായിരം",
+      38000: "മുപ്പത്തിയെട്ടായിരം",
+
+      41000: "നാല്പത്തൊന്നായിരം",
+      43000: "നാല്പത്തിമൂന്നായിരം",
+      48000: "നാല്പത്തിയെട്ടായിരം",
+
+      51000: "അമ്പത്തൊന്നായിരം",
+      53000: "അമ്പത്തിമൂന്നായിരം",
+      58000: "അമ്പത്തിയെട്ടായിരം",
+
+      61000: "അറുപത്തൊന്നായിരം",
+      63000: "അറുപത്തിമൂന്നായിരം",
+      68000: "അറുപത്തിയെട്ടായിരം",
+
+      71000: "എഴുപത്തൊന്നായിരം",
+      73000: "എഴുപത്തിമൂന്നായിരം",
+      78000: "എഴുപത്തിയെട്ടായിരം",
+
+      81000: "എൺപത്തൊന്നായിരം",
+      83000: "എൺപത്തിമൂന്നായിരം",
+      88000: "എൺപത്തിയെട്ടായിരം",
+
+      91000: "തൊണ്ണൂറ്റൊന്നായിരം",
+      93000: "തൊണ്ണൂറ്റിമൂന്നായിരം",
+      98000: "തൊണ്ണൂറ്റിയെട്ടായിരം",
+    };
+
+    if (mapping[formatted]) return mapping[formatted];
+
+    if (3 < formatted.length) {
+      const multiples = formatted.match(/(.{1,2})(.{3})/);
+
+      const multiplesOf1000 = `${multiples[1]}000`;
+      let lessThan100000 = "";
+
+      if (mapping[multiplesOf1000]) lessThan100000 = mapping[multiplesOf1000];
+      else {
+        lessThan100000 = `${this.lessThan100(multiples[1])}${mapping[1000]}`;
+
+        switch (multiples[1].substr(-1)) {
+          case "0":
+          case "6": {
+            lessThan100000 = lessThan100000.replace(/റ്ആ/, "റാ");
+            break;
+          }
+
+          case "0":
+          case "9": {
+            lessThan100000 = lessThan100000.replace(/ത്ആ|ത്ത്ആ/, "തിനാ");
+            break;
+          }
+
+          case "2": {
+            lessThan100000 = lessThan100000.replace(/ണ്ട്ആ/, "ണ്ടാ");
+            break;
+          }
+
+          case "4": {
+            lessThan100000 = lessThan100000.replace(/ല്ആ/, "ലാ");
+            break;
+          }
+
+          case "5": {
+            lessThan100000 = lessThan100000.replace(/ഞ്ച്ആ/, "യ്യാ");
+            break;
+          }
+
+          case "7": {
+            lessThan100000 = lessThan100000.replace(/ഴ്ആ/, "ഴാ");
+            break;
+          }
+        }
+      }
+
+      if (multiples[2] == "000") return lessThan100000;
+
+      return `${lessThan100000.replace(/ം$/, "ത്തി")} ${this.lessThan1000(
+        multiples[2]
+      )}`.replace(/ത്തി നൂ/, "ത്തി ഒരുനൂ");
+    }
+
+    return this.lessThan1000(number);
   },
 };
