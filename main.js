@@ -1,4 +1,10 @@
 module.exports = {
+  /**
+   * convert number to words in malayalam (less than 100)
+   * @function lessThan100
+   * @param  {Number|String} number max length 2
+   * @return {String} words in malayalam
+   */
   lessThan100(number = "") {
     const formatted = `${number}`
       .replace(/[^0-9]+/g, "")
@@ -149,6 +155,12 @@ module.exports = {
     }
   },
 
+  /**
+   * convert number to words in malayalam (less than 1000)
+   * @function lessThan1000
+   * @param  {Number|String} number max length 3
+   * @return {String} words in malayalam
+   */
   lessThan1000(number = "") {
     const formatted = `${number}`
       .replace(/[^0-9]+/g, "")
@@ -203,6 +215,12 @@ module.exports = {
     }
   },
 
+  /**
+   * convert number to words in malayalam (less than 100000)
+   * @function lessThan100000
+   * @param  {Number|String} number max length 5
+   * @return {String} words in malayalam
+   */
   lessThan100000(number = "") {
     const formatted = `${number}`
       .replace(/[^0-9]+/g, "")
@@ -309,6 +327,12 @@ module.exports = {
     )}`.replace(/ത്തി നൂ/, "ത്തി ഒരുനൂ");
   },
 
+  /**
+   * convert number to words in malayalam (less than 10000000)
+   * @function lessThan10000000
+   * @param  {Number|String} number max length 7
+   * @return {String} words in malayalam
+   */
   lessThan10000000(number = "") {
     const formatted = `${number}`
       .replace(/[^0-9]+/g, "")
@@ -331,5 +355,35 @@ module.exports = {
     return `${lessThan10000000.replace(/ം$/, "ത്തി")} ${this.lessThan100000(
       multiples[2]
     )}`;
+  },
+
+  /**
+   * convert number to words in malayalam (less than 10000000^10)
+   * @function toWords
+   * @param  {Number|String} number less than 10000000^10
+   * @return {String} words in malayalam
+   */
+  toWords(number = "") {
+    const formatted = `${number}`
+      .replace(/[^0-9]+/g, "")
+      .replace(/^0+([1-9][0-9]*)/, "$1")
+      .replace(/^0+0/, "0");
+
+    if (!formatted) return new Error("invalid number format");
+
+    let slice = formatted;
+    let words = "";
+
+    for (let i = 0; i < 10 && slice; i++) {
+      const sliceFromEnd = slice.substr(-7);
+      slice = slice.replace(new RegExp(`${sliceFromEnd}$`), "");
+      if (sliceFromEnd != "0000000")
+        words = `${
+          i && sliceFromEnd == "1" ? "ഒരു" : this.lessThan10000000(sliceFromEnd)
+        }${words ? " " : ""}${words}`;
+      if (slice) words = `കോടി${words ? " " : ""}${words}`;
+    }
+
+    return words;
   },
 };
