@@ -10,7 +10,7 @@
   "name": "number-to-words-in-malayalam",
   "repository": {
     "type": "git",
-    "url": "https://github.com/HedCET/number-to-words-in-malayalam.git"
+    "url": "https://github.com/smc/number-to-words-in-malayalam.git"
   },
-  "version": "1.0.3"
+  "version": "1.0.5"
 }
