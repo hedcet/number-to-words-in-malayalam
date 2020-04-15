@@ -158,6 +158,8 @@ module.exports = {
     if (!formatted || 3 < formatted.length)
       return new Error("invalid number format");
 
+    if (formatted.length < 3) return this.lessThan100(formatted);
+
     const mapping = {
       100: "നൂറ്",
       200: "ഇരുനൂറ്",
@@ -172,37 +174,33 @@ module.exports = {
 
     if (mapping[formatted]) return mapping[formatted];
 
-    if (2 < formatted.length) {
-      const multiplesOf100 = `${formatted.charAt(0)}00`;
-      const lessThan100 = this.lessThan100(
-        `${formatted.charAt(1)}${formatted.charAt(2)}`
-      );
+    const multiplesOf100 = `${formatted.charAt(0)}00`;
+    const lessThan100 = this.lessThan100(
+      `${formatted.charAt(1)}${formatted.charAt(2)}`
+    );
 
-      switch (multiplesOf100) {
-        case "100":
-        case "200":
-        case "300":
-        case "400":
-        case "500":
-        case "600":
-        case "700":
-        case "800": {
-          return `${mapping[multiplesOf100].replace(
-            /റ്$/,
-            "റ്റി"
-          )} ${lessThan100}`;
-        }
+    switch (multiplesOf100) {
+      case "100":
+      case "200":
+      case "300":
+      case "400":
+      case "500":
+      case "600":
+      case "700":
+      case "800": {
+        return `${mapping[multiplesOf100].replace(
+          /റ്$/,
+          "റ്റി"
+        )} ${lessThan100}`;
+      }
 
-        case "900": {
-          return `${mapping[multiplesOf100].replace(
-            /ം$/,
-            "ത്തി"
-          )} ${lessThan100}`;
-        }
+      case "900": {
+        return `${mapping[multiplesOf100].replace(
+          /ം$/,
+          "ത്തി"
+        )} ${lessThan100}`;
       }
     }
-
-    return this.lessThan100(formatted);
   },
 
   lessThan100000(number = "") {
@@ -213,6 +211,8 @@ module.exports = {
 
     if (!formatted || 5 < formatted.length)
       return new Error("invalid number format");
+
+    if (formatted.length < 4) return this.lessThan1000(number);
 
     const mapping = {
       1000: "ആയിരം",
@@ -258,58 +258,54 @@ module.exports = {
 
     if (mapping[formatted]) return mapping[formatted];
 
-    if (3 < formatted.length) {
-      const multiples = formatted.match(/(.{1,2})(.{3})/);
+    const multiples = formatted.match(/(.{1,2})(.{3})/);
 
-      const multiplesOf1000 = `${multiples[1]}000`;
-      let lessThan100000 = "";
+    const multiplesOf1000 = `${multiples[1]}000`;
+    let lessThan100000 = "";
 
-      if (mapping[multiplesOf1000]) lessThan100000 = mapping[multiplesOf1000];
-      else {
-        lessThan100000 = `${this.lessThan100(multiples[1])}${mapping[1000]}`;
+    if (mapping[multiplesOf1000]) lessThan100000 = mapping[multiplesOf1000];
+    else {
+      lessThan100000 = `${this.lessThan100(multiples[1])}${mapping[1000]}`;
 
-        switch (multiples[1].substr(-1)) {
-          case "0":
-          case "6": {
-            lessThan100000 = lessThan100000.replace(/റ്ആ/, "റാ");
-            break;
-          }
+      switch (multiples[1].substr(-1)) {
+        case "0":
+        case "6": {
+          lessThan100000 = lessThan100000.replace(/റ്ആ/, "റാ");
+          break;
+        }
 
-          case "0":
-          case "9": {
-            lessThan100000 = lessThan100000.replace(/ത്ആ|ത്ത്ആ/, "തിനാ");
-            break;
-          }
+        case "0":
+        case "9": {
+          lessThan100000 = lessThan100000.replace(/ത്ആ|ത്ത്ആ/, "തിനാ");
+          break;
+        }
 
-          case "2": {
-            lessThan100000 = lessThan100000.replace(/ണ്ട്ആ/, "ണ്ടാ");
-            break;
-          }
+        case "2": {
+          lessThan100000 = lessThan100000.replace(/ണ്ട്ആ/, "ണ്ടാ");
+          break;
+        }
 
-          case "4": {
-            lessThan100000 = lessThan100000.replace(/ല്ആ/, "ലാ");
-            break;
-          }
+        case "4": {
+          lessThan100000 = lessThan100000.replace(/ല്ആ/, "ലാ");
+          break;
+        }
 
-          case "5": {
-            lessThan100000 = lessThan100000.replace(/ഞ്ച്ആ/, "യ്യാ");
-            break;
-          }
+        case "5": {
+          lessThan100000 = lessThan100000.replace(/ഞ്ച്ആ/, "യ്യാ");
+          break;
+        }
 
-          case "7": {
-            lessThan100000 = lessThan100000.replace(/ഴ്ആ/, "ഴാ");
-            break;
-          }
+        case "7": {
+          lessThan100000 = lessThan100000.replace(/ഴ്ആ/, "ഴാ");
+          break;
         }
       }
-
-      if (multiples[2] == "000") return lessThan100000;
-
-      return `${lessThan100000.replace(/ം$/, "ത്തി")} ${this.lessThan1000(
-        multiples[2]
-      )}`.replace(/ത്തി നൂ/, "ത്തി ഒരുനൂ");
     }
 
-    return this.lessThan1000(number);
+    if (multiples[2] == "000") return lessThan100000;
+
+    return `${lessThan100000.replace(/ം$/, "ത്തി")} ${this.lessThan1000(
+      multiples[2]
+    )}`.replace(/ത്തി നൂ/, "ത്തി ഒരുനൂ");
   },
 };
