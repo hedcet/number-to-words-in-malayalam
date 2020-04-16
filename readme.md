@@ -2,7 +2,7 @@
 
 many places we are writing number in words ([cheques](https://upload.wikimedia.org/wikipedia/commons/3/3c/Sample_cheque.jpeg), [invoices](https://i.ibb.co/3FNRgX9/Screenshot-2020-04-16-at-11-06-03-AM.png), etc) & most of the places we are using english
 
-in english, we are counting multiples of thousands (example  millions, billions, etc) to spell that (like 6493 as _six thousand four hundred and ninety three_) but in kerala we are using lacks & crores more common than millions & billions
+in english, we are counting in multiples of thousands (example millions, billions, etc) to spell that (like 6493 as _six thousand four hundred and ninety three_) but in kerala we are using lacks & crores more common than millions & billions
 
 so this [npm](https://www.npmjs.com/package/number-to-words-in-malayalam) module will help you write number (digits) in malayalam words, by default we are counting in lacks & crores instead of millions & billions
 
