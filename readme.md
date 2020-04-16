@@ -1,10 +1,12 @@
-# convert number to words in malayalam
+### introduction to number-to-words-in-malayalam
 
-helper functions for number (digits) to malayalam words conversion
+many places we are writing numbers in words & most of the places ([cheques](https://upload.wikimedia.org/wikipedia/commons/3/3c/Sample_cheque.jpeg), [invoices](https://i.ibb.co/3FNRgX9/Screenshot-2020-04-16-at-11-06-03-AM.png), etc) we are using english
 
-### install
+in english, we are following multiples of thousands (example  millions, billions, etc) to spellout number (like 6493 as _six thousand four hundred and ninety three_) but in india we are using lacks & crores more commonly than millions & billions
 
-with [npm](https://www.npmjs.com/package/number-to-words-in-malayalam) do:
+so this [npm](https://www.npmjs.com/package/number-to-words-in-malayalam) module will help you write number (digits) in malayalam words, we are using lacks & crores instead of millions & billions
+
+### installation
 
 ```
 npm install --save number-to-words-in-malayalam
