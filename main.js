@@ -8,8 +8,7 @@ module.exports = {
   lessThan100(number = "") {
     const formatted = `${number}`
       .replace(/[^0-9]+/g, "")
-      .replace(/^0+([1-9][0-9]*)/, "$1")
-      .replace(/^0+0/, "0");
+      .replace(/^0+([1-9][0-9]*|0$)/, "$1");
 
     if (!formatted || 2 < formatted.length)
       return new Error("invalid number format");
@@ -30,6 +29,7 @@ module.exports = {
       11: "പതിനൊന്ന്",
       12: "പന്ത്രണ്ട്",
       19: "പത്തൊമ്പത്",
+
       20: "ഇരുപത്",
       30: "മുപ്പത്",
       40: "നാല്പത്",
@@ -42,34 +42,29 @@ module.exports = {
 
     if (mapping[formatted]) return mapping[formatted];
 
-    const multiplesOf10 = `${formatted.charAt(0)}0`;
-    const multiplesOf1 = `${formatted.charAt(1)}`;
+    const part10 = `${formatted.charAt(0)}0`;
+    const part1 = `${formatted.charAt(1)}`;
 
-    const word = `${mapping[multiplesOf10]}${mapping[multiplesOf1]}`;
+    const word = `${mapping[part10]}${mapping[part1]}`;
 
-    switch (multiplesOf10) {
+    switch (part10) {
       case "10": {
-        switch (multiplesOf1) {
-          case "3": {
+        switch (part1) {
+          case "3":
             return word.replace(/ത്ത്മ/, "തിമ");
-          }
 
           case "4":
-          case "5": {
+          case "5":
             return word.replace(/ത്ത്ന|ത്ത്അ/, "തിന");
-          }
 
-          case "6": {
+          case "6":
             return word.replace(/ത്ത്ആ/, "തിനാ");
-          }
 
-          case "7": {
+          case "7":
             return word.replace(/ത്ത്ഏ/, "തിനേ");
-          }
 
-          case "8": {
+          case "8":
             return word.replace(/ത്ത്എ/, "തിനെ");
-          }
         }
       }
 
@@ -80,76 +75,60 @@ module.exports = {
       case "60":
       case "70":
       case "80": {
-        switch (multiplesOf1) {
+        switch (part1) {
           case "1":
-          case "9": {
+          case "9":
             return word.replace(/ത്ഒ/, "ത്തൊ");
-          }
 
-          case "2": {
+          case "2":
             return word.replace(/ത്ര/, "ത്തിര");
-          }
 
-          case "3": {
+          case "3":
             return word.replace(/ത്മ/, "ത്തിമ");
-          }
 
-          case "4": {
+          case "4":
             return word.replace(/ത്ന/, "ത്തിന");
-          }
 
-          case "5": {
+          case "5":
             return word.replace(/ത്അ/, "ത്ത");
-          }
 
-          case "6": {
+          case "6":
             return word.replace(/ത്ആ/, "ത്തിയാ");
-          }
 
-          case "7": {
+          case "7":
             return word.replace(/ത്ഏ/, "ത്തിയേ");
-          }
 
-          case "8": {
+          case "8":
             return word.replace(/ത്എ/, "ത്തിയെ");
-          }
         }
       }
 
       case "90": {
-        switch (multiplesOf1) {
+        switch (part1) {
           case "1":
-          case "9": {
+          case "9":
             return word.replace(/റ്ഒ/, "റ്റൊ");
-          }
 
-          case "2": {
+          case "2":
             return word.replace(/റ്ര/, "റ്റിര");
-          }
 
-          case "3": {
+          case "3":
             return word.replace(/റ്മ/, "റ്റിമ");
-          }
 
-          case "4": {
+          case "4":
             return word.replace(/റ്ന/, "റ്റിന");
-          }
 
-          case "5": {
+          case "5":
             return word.replace(/റ്അ/, "റ്റ");
-          }
 
-          case "6": {
+          case "6":
             return word.replace(/റ്ആ/, "റ്റിയാ");
-          }
 
-          case "7": {
+          case "7":
             return word.replace(/റ്ഏ/, "റ്റിയേ");
-          }
 
-          case "8": {
+          case "8":
             return word.replace(/റ്എ/, "റ്റിയെ");
-          }
         }
       }
     }
@@ -164,8 +143,7 @@ module.exports = {
   lessThan1000(number = "") {
     const formatted = `${number}`
       .replace(/[^0-9]+/g, "")
-      .replace(/^0+([1-9][0-9]*)/, "$1")
-      .replace(/^0+0/, "0");
+      .replace(/^0+([1-9][0-9]*|0$)/, "$1");
 
     if (!formatted || 3 < formatted.length)
       return new Error("invalid number format");
@@ -186,12 +164,12 @@ module.exports = {
 
     if (mapping[formatted]) return mapping[formatted];
 
-    const multiplesOf100 = `${formatted.charAt(0)}00`;
+    const part100 = `${formatted.charAt(0)}00`;
     const lessThan100 = this.lessThan100(
       `${formatted.charAt(1)}${formatted.charAt(2)}`
     );
 
-    switch (multiplesOf100) {
+    switch (part100) {
       case "100":
       case "200":
       case "300":
@@ -199,19 +177,11 @@ module.exports = {
       case "500":
       case "600":
       case "700":
-      case "800": {
-        return `${mapping[multiplesOf100].replace(
-          /റ്$/,
-          "റ്റി"
-        )} ${lessThan100}`;
-      }
+      case "800":
+        return `${mapping[part100].replace(/റ്$/, "റ്റി")} ${lessThan100}`;
 
-      case "900": {
-        return `${mapping[multiplesOf100].replace(
-          /ം$/,
-          "ത്തി"
-        )} ${lessThan100}`;
-      }
+      case "900":
+        return `${mapping[part100].replace(/ം$/, "ത്തി")} ${lessThan100}`;
     }
   },
 
@@ -224,8 +194,7 @@ module.exports = {
   lessThan100000(number = "") {
     const formatted = `${number}`
       .replace(/[^0-9]+/g, "")
-      .replace(/^0+([1-9][0-9]*)/, "$1")
-      .replace(/^0+0/, "0");
+      .replace(/^0+([1-9][0-9]*|0$)/, "$1");
 
     if (!formatted || 5 < formatted.length)
       return new Error("invalid number format");
@@ -276,16 +245,16 @@ module.exports = {
 
     if (mapping[formatted]) return mapping[formatted];
 
-    const multiples = formatted.match(/(.{1,2})(.{3})/);
+    const parts = formatted.match(/(.{1,2})(.{3})/);
 
-    const multiplesOf1000 = `${multiples[1]}000`;
+    const part1000 = `${parts[1]}000`;
     let lessThan100000 = "";
 
-    if (mapping[multiplesOf1000]) lessThan100000 = mapping[multiplesOf1000];
+    if (mapping[part1000]) lessThan100000 = mapping[part1000];
     else {
-      lessThan100000 = `${this.lessThan100(multiples[1])}${mapping[1000]}`;
+      lessThan100000 = `${this.lessThan100(parts[1])}${mapping[1000]}`;
 
-      switch (multiples[1].substr(-1)) {
+      switch (parts[1].substr(-1)) {
         case "0":
         case "6": {
           lessThan100000 = lessThan100000.replace(/റ്ആ/, "റാ");
@@ -320,11 +289,11 @@ module.exports = {
       }
     }
 
-    if (multiples[2] == "000") return lessThan100000;
+    if (parts[2] == "000") return lessThan100000;
 
     return `${lessThan100000.replace(/ം$/, "ത്തി")} ${this.lessThan1000(
-      multiples[2]
-    )}`.replace(/ത്തി നൂ/, "ത്തി ഒരുനൂ");
+      parts[2]
+    )}`;
   },
 
   /**
@@ -336,24 +305,23 @@ module.exports = {
   lessThan10000000(number = "") {
     const formatted = `${number}`
       .replace(/[^0-9]+/g, "")
-      .replace(/^0+([1-9][0-9]*)/, "$1")
-      .replace(/^0+0/, "0");
+      .replace(/^0+([1-9][0-9]*|0$)/, "$1");
 
     if (!formatted || 7 < formatted.length)
       return new Error("invalid number format");
 
     if (formatted.length < 6) return this.lessThan100000(number);
 
-    const multiples = formatted.match(/(.{1,2})(.{5})/);
+    const parts = formatted.match(/(.{1,2})(.{5})/);
 
     let lessThan10000000 = `${
-      multiples[1] == "1" ? "ഒരു" : this.lessThan100(multiples[1])
+      parts[1] == "1" ? "ഒരു" : this.lessThan100(parts[1])
     } ലക്ഷം`;
 
-    if (multiples[2] == "00000") return lessThan10000000;
+    if (parts[2] == "00000") return lessThan10000000;
 
     return `${lessThan10000000.replace(/ം$/, "ത്തി")} ${this.lessThan100000(
-      multiples[2]
+      parts[2]
     )}`;
   },
 
@@ -366,8 +334,7 @@ module.exports = {
   toWords(number = "") {
     const formatted = `${number}`
       .replace(/[^0-9]+/g, "")
-      .replace(/^0+([1-9][0-9]*)/, "$1")
-      .replace(/^0+0/, "0");
+      .replace(/^0+([1-9][0-9]*|0$)/, "$1");
 
     if (!formatted) return new Error("invalid number format");
 
